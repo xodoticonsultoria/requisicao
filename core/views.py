@@ -196,20 +196,6 @@ def order_list(request):
     })
 
 
-@staff_member_required
-def conclude_order(request, id):
-
-    if request.method == "POST":
-
-        order = get_object_or_404(Order, id=id)
-
-        order.status = "CONCLUIDO"
-        order.concluded_at = timezone.now()
-        order.save()
-
-    return redirect("order_list")
-
-
 # ============================================================
 # TESTE DE PDF — DIAGNÓSTICO (Render)
 # ============================================================
@@ -242,7 +228,7 @@ def generate_pdf(request, id):
     order = get_object_or_404(Order, id=id)
     template = get_template("pdf/order.html")
 
-    logo_path = os.path.join(settings.BASE_DIR, "core", "static", "logo_xodo.png")
+    logo_path = os.path.join(settings.BASE_DIR, "core", "static", "logo_xodo3.png")
     logo_path = logo_path.replace("\\", "/")
 
     logo_url = f"file:///{logo_path}"

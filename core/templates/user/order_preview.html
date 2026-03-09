@@ -119,7 +119,7 @@
         </thead>
 
         <tbody>
-            {% for item in order.items.all %}
+            {% for item in order.orderitem_set.all %}
             <tr>
                 <td>{{ item.product.name }}</td>
                 <td style="text-align:center;">{{ item.quantity }}</td>
