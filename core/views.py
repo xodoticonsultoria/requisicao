@@ -180,15 +180,16 @@ def order_preview(request, id):
 def order_list(request):
     try:
         orders = Order.objects.filter(status="PENDENTE").order_by("-created_at")
-    except:
-        orders = Order.objects.all().order_by("-created_at")
+        pending_orders = orders.count()
 
-    pending_orders = orders.count()
+        return render(request, "admin/orders.html", {
+            "orders": orders,
+            "pending_orders": pending_orders
+        })
 
-    return render(request, "admin/orders.html", {
-        "orders": orders,
-        "pending_orders": pending_orders
-    })
+    except Exception as e:
+        from django.http import HttpResponse
+        return HttpResponse(f"ERRO: {e}")
 
 
 # ============================================================
