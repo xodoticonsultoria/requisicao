@@ -7,7 +7,7 @@
 
 <h2 class="fw-bold mb-4 text-danger">Pedidos Recebidos</h2>
 
-{% if pending_orders > 0 %}
+{% if pending_orders %}
 <div class="text-center bg-warning py-2 fw-bold mb-3">
     🔔 {{ pending_orders }} novo(s) pedido(s) aguardando
 </div>
@@ -28,42 +28,62 @@
     <tbody>
         {% for order in orders %}
         <tr>
-            <td class="text-center">{{ order.id }}</td>
-            <td>
-            {% if order.user %}
-            {{ order.user.username }}
-            {% else %}
-            -
-            {% endif %}
+
+            <td class="text-center">
+                {{ order.id }}
             </td>
 
             <td>
-            {% if order.requisition %}
-            {{ order.requisition.title }}
-            {% else %}
-            -
-            {% endif %}
-            </td>
-            <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
-
-            <td class="text-center">
-                <span class="badge bg-warning text-dark">PENDENTE</span>
+                {% if order.user %}
+                    {{ order.user.username }}
+                {% else %}
+                    -
+                {% endif %}
             </td>
 
+            <td>
+                {% if order.requisition %}
+                    {{ order.requisition.name }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+
+            <td>
+                {{ order.created_at|date:"d/m/Y H:i" }}
+            </td>
+
             <td class="text-center">
-                <a href="/xodo-admin/pedidos/{{ order.id }}/pdf/" class="btn btn-sm btn-danger fw-bold">
+                <span class="badge bg-warning text-dark">
+                    {{ order.status|default:"PENDENTE" }}
+                </span>
+            </td>
+
+            <td class="text-center">
+
+                <a href="/xodo-admin/pedidos/{{ order.id }}/pdf/"
+                   class="btn btn-sm btn-danger fw-bold">
                     📄 Gerar PDF
                 </a>
 
-                <form method="post" action="{% url 'conclude_order' order.id %}" style="display:inline;">
+                <form method="post"
+                      action="{% url 'conclude_order' order.id %}"
+                      style="display:inline;">
+
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-sm btn-success fw-bold"
+
+                    <button type="submit"
+                            class="btn btn-sm btn-success fw-bold"
                             onclick="return confirm('Marcar este pedido como CONCLUÍDO?');">
                         ✅ Concluir
                     </button>
+
                 </form>
+
             </td>
+
         </tr>
+
         {% empty %}
         <tr>
             <td colspan="6" class="text-center py-4">
@@ -72,6 +92,7 @@
         </tr>
         {% endfor %}
     </tbody>
+
 </table>
 
 {% endblock %}
