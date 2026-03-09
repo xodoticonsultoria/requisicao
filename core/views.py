@@ -274,3 +274,19 @@ def dashboard(request):
         "produtos_mais_pedidos": produtos_mais_pedidos,
         "pending_orders": pending_orders
     })
+
+
+
+
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
+from .models import Order
+
+@staff_member_required
+def conclude_order(request, id):
+    order = get_object_or_404(Order, id=id)
+
+    order.status = "CONCLUIDO"
+    order.save()
+
+    return redirect("/xodo-admin/pedidos/")
