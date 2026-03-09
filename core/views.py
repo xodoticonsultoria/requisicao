@@ -176,22 +176,42 @@ def order_preview(request, id):
 # ============================================================
 # ÁREA DO SETOR (ESTOQUE)
 # ============================================================
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
+from .models import Order
+
+
 @staff_member_required
 def order_list(request):
 
+    # busca pedidos mais recentes primeiro
     orders = (
         Order.objects
         .select_related("user", "requisition")
-        .only("id", "status", "created_at", "user__username", "requisition__title")
         .order_by("-created_at")[:50]
     )
 
-    pending_orders = orders.filter(status="PENDENTE").count()
+    pending_orders = Order.objects.filter(status="PENDENTE").count()
 
     return render(request, "admin/orders.html", {
         "orders": orders,
         "pending_orders": pending_orders
     })
+
+
+@staff_member_required
+def conclude_order(request, id):
+
+    order = get_object_or_404(Order, id=id)
+
+    if request.method == "POST":
+        order.status = "CONCLUIDO"
+        order.save()
+
+        messages.success(request, "Pedido concluído com sucesso!")
+
+    return redirect("/xodo-admin/pedidos/")
 
 
 # ============================================================
@@ -278,16 +298,3 @@ def dashboard(request):
 
 
 
-
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.admin.views.decorators import staff_member_required
-from .models import Order
-
-@staff_member_required
-def conclude_order(request, id):
-    order = get_object_or_404(Order, id=id)
-
-    order.status = "CONCLUIDO"
-    order.save()
-
-    return redirect("/xodo-admin/pedidos/")
