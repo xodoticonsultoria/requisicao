@@ -176,17 +176,12 @@ def order_preview(request, id):
 # ============================================================
 # ÁREA DO SETOR (ESTOQUE)
 # ============================================================
-
 @staff_member_required
 def order_list(request):
-
-    orders = (
-        Order.objects
-        .filter(status="PENDENTE")
-        .select_related("user", "requisition")
-        .prefetch_related("orderitem_set__product")
-        .order_by("-created_at")
-    )
+    try:
+        orders = Order.objects.filter(status="PENDENTE").order_by("-created_at")
+    except:
+        orders = Order.objects.all().order_by("-created_at")
 
     pending_orders = orders.count()
 
