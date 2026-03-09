@@ -176,21 +176,22 @@ def order_preview(request, id):
 # ============================================================
 # ÁREA DO SETOR (ESTOQUE)
 # ============================================================
-from django.http import HttpResponse
-from django.contrib.admin.views.decorators import staff_member_required
-
 @staff_member_required
 def order_list(request):
-    try:
-        orders = Order.objects.all().order_by("-created_at")
 
-        return render(request, "admin/orders.html", {
-            "orders": orders,
-            "pending_orders": orders.count()
-        })
+    orders = (
+        Order.objects
+        .select_related("user", "requisition")
+        .only("id", "status", "created_at", "user__username", "requisition__title")
+        .order_by("-created_at")[:50]
+    )
 
-    except Exception as e:
-        return HttpResponse(f"ERRO: {e}")
+    pending_orders = orders.filter(status="PENDENTE").count()
+
+    return render(request, "admin/orders.html", {
+        "orders": orders,
+        "pending_orders": pending_orders
+    })
 
 
 # ============================================================
