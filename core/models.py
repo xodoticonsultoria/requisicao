@@ -56,11 +56,16 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     requisition = models.ForeignKey(Requisition, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     is_read = models.BooleanField(default=False)
 
     # ✅ novos campos
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="PENDENTE")
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="PENDENTE",
+        db_index=True
+    )
     concluded_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -80,7 +85,7 @@ class OrderItem(models.Model):
         related_name="items"
     )
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity}"

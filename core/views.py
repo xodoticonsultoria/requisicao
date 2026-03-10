@@ -201,6 +201,7 @@ def conclude_order(request, id):
 
     if request.method == "POST":
         order.status = "CONCLUIDO"
+        order.concluded_at = timezone.now()
         order.save()
 
         messages.success(request, "Pedido concluído com sucesso!")
