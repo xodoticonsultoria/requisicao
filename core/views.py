@@ -184,15 +184,9 @@ from .models import Order
 
 @staff_member_required
 def order_list(request):
+    orders = Order.objects.filter(status="PENDENTE").order_by("-created_at")
 
-    # busca pedidos mais recentes primeiro
-    orders = (
-        Order.objects
-        .select_related("user", "requisition")
-        .order_by("-created_at")[:50]
-    )
-
-    pending_orders = Order.objects.filter(status="PENDENTE").count()
+    pending_orders = orders.count()
 
     return render(request, "admin/orders.html", {
         "orders": orders,
