@@ -41,7 +41,7 @@
 
     </div>
 
-    <button class="send-btn" type="submit">Enviar Pedido</button>
+    <button class="send-btn" type="submit" id="btnEnviar">Enviar Pedido</button>
 
 </form>
 
@@ -167,6 +167,15 @@ function changeQty(id, amount) {
     if (value < 0) value = 0;
     input.value = value;
 }
+</script>
+
+<script>
+document.querySelector("form").addEventListener("submit", function() {
+    const btn = document.getElementById("btnEnviar");
+
+    btn.disabled = true;
+    btn.innerText = "⏳ Enviando pedido...";
+});
 </script>
 
 {% endblock %}

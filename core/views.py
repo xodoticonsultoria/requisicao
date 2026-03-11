@@ -114,6 +114,15 @@ def send_order(request, id):
 
     requisition = get_object_or_404(Requisition, id=id)
 
+    last_order = Order.objects.filter(
+        user=request.user,
+        requisition=requisition,
+        status="PENDENTE"
+    ).order_by("-created_at").first()
+
+    if last_order:
+        return redirect("order_sent")
+
     order = Order.objects.create(
         user=request.user,
         requisition=requisition

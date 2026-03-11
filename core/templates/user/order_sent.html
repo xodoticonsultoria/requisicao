@@ -1,10 +1,47 @@
 {% extends "base.html" %}
-{% block title %}Pedido Enviado{% endblock %}
 
 {% block content %}
-<div class="alert alert-success text-center fw-bold">
-    ✔ Pedido enviado com sucesso!
+
+<div style="
+    max-width:700px;
+    margin:80px auto;
+    text-align:center;
+    padding:40px;
+    background:#e8f5e9;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+">
+
+    <h1 style="
+        font-size:40px;
+        color:#2e7d32;
+        margin-bottom:20px;
+        font-weight:bold;
+    ">
+        ✅ Pedido enviado com sucesso!
+    </h1>
+
+    <p style="
+        font-size:20px;
+        color:#333;
+        margin-bottom:30px;
+    ">
+        Seu pedido foi registrado no sistema.
+    </p>
+
+    <a href="/" style="
+        display:inline-block;
+        padding:15px 30px;
+        background:#2e7d32;
+        color:white;
+        font-size:18px;
+        border-radius:8px;
+        text-decoration:none;
+        font-weight:bold;
+    ">
+        🔙 Voltar ao sistema
+    </a>
+
 </div>
 
-<a href="/" class="btn btn-danger w-100">Voltar</a>
 {% endblock %}

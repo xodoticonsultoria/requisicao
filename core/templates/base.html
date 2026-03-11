@@ -15,7 +15,7 @@
         }
 
         body {
-            background: #fafafa;
+            background: linear-gradient(90deg, #A61C1C, #F2B233);
             overflow-x: hidden;
         }
 
@@ -129,7 +129,7 @@
     </style>
 </head>
 
-<body>
+<body style="display:flex; flex-direction:column; min-height:100vh;">
 
 <nav class="navbar xodo-navbar mb-4">
     <div class="container d-flex justify-content-between">
@@ -160,10 +160,28 @@
 </div>
 {% endif %}
 
-<div class="container mb-5">
-    {% block content %}{% endblock %}
-</div>
+<main style="flex:1;">
+    <div class="container mb-5">
+        {% block content %}{% endblock %}
+    </div>
+</main>
 
-<footer class="text-center bg-dark">   </footer>
+<footer style="
+    text-align:center;
+    padding:4px;
+    color:#cbd5f5;
+    background-color: var(--xodo-red-dark);
+    font-size:14px;
+    font-weight:bold;
+">
+
+    © 2026 DTECH Sistemas
+    <br>
+    <span style="font-size:10px; opacity:0.8;">
+        Sistema de Requisições • Versão 2.0
+    </span>
+
+</footer>
+
 </body>
 </html>
