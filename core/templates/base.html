@@ -15,7 +15,7 @@
         }
 
         body {
-            background: #ffff94;
+            background: linear-gradient(90deg, #A61C1C, #F2B233);
             overflow-x: hidden;
         }
 
@@ -126,6 +126,25 @@
                 display: none;
             }
         }
+
+        /* ===== TITULOS DAS TELAS ===== */
+
+        .page-title {
+            font-weight: 800;
+            font-size: 28px;
+            color: white;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+
+        /* SUBTITULOS DAS SEÇÕES */
+
+        .sub-title{
+            color:white;
+            font-weight:700;
+            margin-bottom:10px;
+        }
     </style>
 </head>
 
@@ -135,7 +154,7 @@
     <div class="container d-flex justify-content-between">
         <a href="/" class="navbar-brand d-flex align-items-center text-white fw-bold">
             <img src="{% static 'logo.png' %}" class="xodo-logo me-2">
-            Sistema de Requisições Xodó
+            Requisições
         </a>
 
         {% if user.is_authenticated %}
@@ -168,16 +187,16 @@
 
 <footer style="
     text-align:center;
-    padding:4px;
+    padding:2px;
     color:#cbd5f5;
-    background-color: var(--xodo-red-dark);
-    font-size:14px;
+    background: linear-gradient(90deg, #A61C1C, #F2B233);
+    font-size:16px;
     font-weight:bold;
 ">
 
     © 2026 DTECH Sistemas
     <br>
-    <span style="font-size:10px; opacity:0.8;">
+    <span style="font-size:12px; opacity:0.8;">
         Sistema de Requisições • Versão 2.0
     </span>
 
