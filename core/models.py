@@ -48,7 +48,10 @@ class Product(models.Model):
         return self.name
 
 
+
+
 class Order(models.Model):
+
     STATUS_CHOICES = (
         ("PENDENTE", "Pendente"),
         ("CONCLUIDO", "Concluído"),
@@ -56,17 +59,28 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     requisition = models.ForeignKey(Requisition, on_delete=models.CASCADE)
+
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
     is_read = models.BooleanField(default=False)
 
-    # ✅ novos campos
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default="PENDENTE",
         db_index=True
     )
+
     concluded_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Pedido {self.id} - {self.user.username}"
+
+
+
 
     class Meta:
         permissions = [
@@ -79,13 +93,21 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
-        related_name="items"
+        related_name="items",
+        db_index=True
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        db_index=True
+    )
+
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.product.name} - {self.quantity}"
+        return f"Item {self.id} - {self.quantity}"
