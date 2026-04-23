@@ -12,11 +12,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
 # DEBUG por ambiente (local: set DEBUG=1)
 DEBUG = os.environ.get("DEBUG", "0") == "1"
 
-ALLOWED_HOSTS = [
-    "requisicao-1aqm.onrender.com",
-    "127.0.0.1",
-    "localhost",
-]
+import os
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # ===============================
 # APPS
