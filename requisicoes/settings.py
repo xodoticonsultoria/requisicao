@@ -15,16 +15,18 @@ DEBUG = os.environ.get("DEBUG", "0") == "1"
 import os
 
 ALLOWED_HOSTS = [
-    "requisicao-1aqm.onrender.com",
+    "web-production-95971.up.railway.app",
+    ".railway.app",
     "127.0.0.1",
     "localhost",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://requisicao-1aqm.onrender.com",
+    "https://web-production-95971.up.railway.app",
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 # ===============================
 # APPS
 # ===============================
