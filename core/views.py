@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
@@ -201,25 +202,6 @@ def conclude_order(request, id):
     return redirect("order_list")
 
 
-# ============================================================
-# PDF COM WEASYPRINT (🔥 NOVO)
-# ============================================================
-
-# @staff_member_required
-# def generate_pdf(request, id):
-#
-#     order = get_object_or_404(Order, id=id)
-#
-#     html_string = render_to_string("pdf/order.html", {
-#         "order": order
-#     })
-#
-#     response = HttpResponse(content_type="application/pdf")
-#     response["Content-Disposition"] = f'attachment; filename="pedido_{order.id}.pdf"'
-#
-#     HTML(string=html_string).write_pdf(response)
-#
-#     return response
 
 @staff_member_required
 def generate_pdf(request, id):
@@ -229,6 +211,10 @@ def generate_pdf(request, id):
     return render(request, "pdf/order.html", {
         "order": order
     })
+
+
+def test_pdf(request):
+    return HttpResponse("PDF OK")
 
 # ============================================================
 # DASHBOARD
