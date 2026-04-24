@@ -204,7 +204,6 @@ def conclude_order(request, id):
 
 
 @staff_member_required
-@staff_member_required
 def generate_pdf(request, id):
 
     order = get_object_or_404(
