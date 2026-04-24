@@ -11,6 +11,12 @@ body {
     color: #000;
 }
 
+/* 🔥 CONTAINER CENTRAL */
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
 .header {
     text-align: center;
     margin-bottom: 15px;
@@ -22,30 +28,41 @@ body {
 }
 
 .info {
-    margin-bottom: 10px;
-    line-height: 1.4;
+    margin-bottom: 15px;
+    line-height: 1.5;
 }
 
+/* 🔥 TABELA AJUSTADA */
 table {
-    width: 100%;
+    width: 70%;
+    margin: 0 auto;
     border-collapse: collapse;
     font-size: 10px;
 }
 
 th, td {
     border: 1px solid #000;
-    padding: 4px;
+    padding: 5px;
 }
 
 th {
-    background: #eee;
-    text-align: left;
+    background: #f2f2f2;
+    font-weight: bold;
+}
+
+/* 🔥 COLUNA QTD */
+th:last-child,
+td:last-child {
+    width: 80px;
+    text-align: center;
 }
 
 .total {
     margin-top: 10px;
     text-align: right;
     font-weight: bold;
+    width: 70%;
+    margin-left: auto;
 }
 
 /* 🔥 IMPRESSÃO */
@@ -66,46 +83,49 @@ window.onload = function() {
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <div class="title">XODÓ - PEDIDO #{{ order.id }}</div>
-</div>
+<div class="container">
 
-<!-- INFORMAÇÕES -->
-<div class="info">
-    <strong>Usuário:</strong> {{ order.user }}<br>
-    <strong>Requisição:</strong> {{ order.requisition.name }}<br>
-    <strong>Data:</strong> {{ order.created_at }}<br>
-    <strong>Status:</strong> {{ order.status }}
-</div>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="title">XODÓ - PEDIDO #{{ order.id }}</div>
+    </div>
 
-<!-- TABELA -->
-<table>
-    <thead>
-        <tr>
-            <th>Produto</th>
-            <th style="width: 80px;">Quantidade</th>
-        </tr>
-    </thead>
+    <!-- INFORMAÇÕES -->
+    <div class="info">
+        <strong>Usuário:</strong> {{ order.user }}<br>
+        <strong>Requisição:</strong> {{ order.requisition.name }}<br>
+        <strong>Data:</strong> {{ order.created_at }}<br>
+        <strong>Status:</strong> {{ order.status }}
+    </div>
 
-    <tbody>
-        {% for item in order.items.all %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.quantity }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="2">Nenhum item encontrado</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- TABELA -->
+    <table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
 
-<!-- TOTAL -->
-<div class="total">
-    Total de itens:
-    {{ order.items.all|length }}
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">Nenhum item encontrado</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- TOTAL -->
+    <div class="total">
+        Total de itens: {{ order.items.all|length }}
+    </div>
+
 </div>
 
 </body>
