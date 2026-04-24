@@ -33,7 +33,7 @@ urlpatterns = [
     # ====================
     # TESTE PDF
     # ====================
-    # path("test-pdf/", views.test_pdf),
+    path("test-pdf/", views.test_pdf),
 
     # ====================
     # DJANGO ADMIN
