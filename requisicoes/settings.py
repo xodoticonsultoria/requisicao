@@ -14,8 +14,17 @@ DEBUG = os.environ.get("DEBUG", "0") == "1"
 
 import os
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = [
+    "requisicao-1aqm.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://requisicao-1aqm.onrender.com",
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # ===============================
 # APPS
 # ===============================
