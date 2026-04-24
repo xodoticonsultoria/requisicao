@@ -1,6 +1,11 @@
+VIEWS.PY
+
+
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.template.loader import get_template
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Count, Sum
@@ -10,6 +15,8 @@ from django.utils import timezone
 import base64
 import os
 from io import BytesIO
+
+from xhtml2pdf import pisa
 import qrcode
 
 from .models import Requisition, Product, Order, OrderItem
@@ -181,8 +188,10 @@ def order_preview(request, id):
 # ============================================================
 # ÁREA DO SETOR (ESTOQUE)
 # ============================================================
-
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
+from .models import Order
 
 
 @staff_member_required
@@ -210,6 +219,59 @@ def conclude_order(request, id):
         messages.success(request, "Pedido concluído com sucesso!")
 
     return redirect("/xodo-admin/pedidos/")
+
+
+# ============================================================
+# TESTE DE PDF — DIAGNÓSTICO (Render)
+# ============================================================
+
+def test_pdf(request):
+
+    html = """
+    <h1>PDF TESTE</h1>
+    <p>Se você vê isso, o xhtml2pdf está funcionando.</p>
+    """
+
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="teste.pdf"'
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse("ERRO ao gerar PDF", status=500)
+
+    return response
+
+
+# ============================================================
+# GERAR PDF
+# ============================================================
+
+@staff_member_required
+def generate_pdf(request, id):
+
+    order = get_object_or_404(Order, id=id)
+    template = get_template("pdf/order.html")
+
+    logo_path = os.path.join(settings.BASE_DIR, "core", "static", "logo_xodo3.png")
+    logo_path = logo_path.replace("\\", "/")
+
+    logo_url = f"file:///{logo_path}"
+
+    html = template.render({
+        "order": order,
+        "logo_path": logo_url,
+    })
+
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="pedido_{order.id}.pdf"'
+
+    pisa_status = pisa.CreatePDF(html, dest=response, encoding="utf-8")
+
+    if pisa_status.err:
+        return HttpResponse("Erro ao gerar PDF", status=500)
+
+    return response
 
 
 # ============================================================
