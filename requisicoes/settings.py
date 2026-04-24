@@ -1,3 +1,4 @@
+from logging import DEBUG
 from pathlib import Path
 import os
 import dj_database_url
@@ -10,7 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-secret-key")
 
 # DEBUG por ambiente (local: set DEBUG=1)
-DEBUG = os.environ.get("DEBUG", "0") == "1"
+import os
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 import os
 
@@ -87,10 +89,9 @@ WSGI_APPLICATION = "requisicoes.wsgi.application"
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
-    # Produção (Render/Postgres etc.)
     DATABASES = {
         "default": dj_database_url.config(
-            default=DATABASE_URL,
+            default=os.getenv("DATABASE_URL"),
             conn_max_age=600,
             ssl_require=True,
         )
