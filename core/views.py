@@ -1,7 +1,5 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Count, Sum
@@ -11,7 +9,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 import base64
 from io import BytesIO
 
-from weasyprint import HTML
+
 import qrcode
 
 from .models import Requisition, Product, Order, OrderItem
@@ -200,7 +198,7 @@ def conclude_order(request, id):
 
         messages.success(request, "Pedido concluído com sucesso!")
 
-    return redirect("/xodo-admin/pedidos/")
+    return redirect("order_list")
 
 
 # ============================================================
