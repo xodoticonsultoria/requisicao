@@ -214,7 +214,7 @@ def generate_pdf(request, id):
 
     return render(request, "pdf/order.html", {
         "order": order,
-        "items": order.orderitem_set.all()  # 👈 FORÇA OS ITENS
+        "items": order.items.all()  # 👈 FORÇA OS ITENS
     })
 
 

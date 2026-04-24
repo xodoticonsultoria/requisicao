@@ -76,6 +76,10 @@ class Order(models.Model):
     class Meta:
         ordering = ["-created_at"]
 
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(args, kwargs)
+        self.items = None
+
     def __str__(self):
         return f"Pedido {self.id} - {self.user.username}"
 
