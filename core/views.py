@@ -206,16 +206,11 @@ def conclude_order(request, id):
 @staff_member_required
 def generate_pdf(request, id):
 
-    order = get_object_or_404(
-        Order.objects.prefetch_related("orderitem_set__product"),
-        id=id
-    )
+    order = get_object_or_404(Order, id=id)
 
     return render(request, "pdf/order.html", {
-        "order": order,
-        "items": order.items.all()  # 👈 FORÇA OS ITENS
+        "order": order
     })
-
 
 def test_pdf(request):
     return HttpResponse("PDF OK")

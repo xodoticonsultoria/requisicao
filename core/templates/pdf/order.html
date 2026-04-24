@@ -5,9 +5,10 @@
 
 <style>
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     font-size: 11px;
     margin: 20px;
+    color: #000;
 }
 
 .header {
@@ -22,6 +23,7 @@ body {
 
 .info {
     margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 table {
@@ -37,9 +39,16 @@ th, td {
 
 th {
     background: #eee;
+    text-align: left;
 }
 
-/* 🔥 IMPRESSÃO AUTOMÁTICA */
+.total {
+    margin-top: 10px;
+    text-align: right;
+    font-weight: bold;
+}
+
+/* 🔥 IMPRESSÃO */
 @media print {
     body {
         margin: 10px;
@@ -57,33 +66,47 @@ window.onload = function() {
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
     <div class="title">XODÓ - PEDIDO #{{ order.id }}</div>
 </div>
 
+<!-- INFORMAÇÕES -->
 <div class="info">
     <strong>Usuário:</strong> {{ order.user }}<br>
+    <strong>Requisição:</strong> {{ order.requisition.name }}<br>
     <strong>Data:</strong> {{ order.created_at }}<br>
     <strong>Status:</strong> {{ order.status }}
 </div>
 
+<!-- TABELA -->
 <table>
     <thead>
         <tr>
             <th>Produto</th>
-            <th>Quantidade</th>
+            <th style="width: 80px;">Quantidade</th>
         </tr>
     </thead>
 
     <tbody>
-        {% for item in items %}
+        {% for item in order.items.all %}
         <tr>
             <td>{{ item.product.name }}</td>
             <td>{{ item.quantity }}</td>
         </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">Nenhum item encontrado</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
+
+<!-- TOTAL -->
+<div class="total">
+    Total de itens:
+    {{ order.items.all|length }}
+</div>
 
 </body>
 </html>
