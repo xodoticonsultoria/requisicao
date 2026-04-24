@@ -207,22 +207,30 @@ def conclude_order(request, id):
 # PDF COM WEASYPRINT (🔥 NOVO)
 # ============================================================
 
+# @staff_member_required
+# def generate_pdf(request, id):
+#
+#     order = get_object_or_404(Order, id=id)
+#
+#     html_string = render_to_string("pdf/order.html", {
+#         "order": order
+#     })
+#
+#     response = HttpResponse(content_type="application/pdf")
+#     response["Content-Disposition"] = f'attachment; filename="pedido_{order.id}.pdf"'
+#
+#     HTML(string=html_string).write_pdf(response)
+#
+#     return response
+
 @staff_member_required
 def generate_pdf(request, id):
 
     order = get_object_or_404(Order, id=id)
 
-    html_string = render_to_string("pdf/order.html", {
+    return render(request, "pdf/order.html", {
         "order": order
     })
-
-    response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f'attachment; filename="pedido_{order.id}.pdf"'
-
-    HTML(string=html_string).write_pdf(response)
-
-    return response
-
 
 # ============================================================
 # DASHBOARD

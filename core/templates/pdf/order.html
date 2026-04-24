@@ -1,87 +1,89 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
-    <meta charset="UTF-8">
+<meta charset="utf-8">
 
-    <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 13px;
-            margin: 20px;
-        }
+<style>
+body {
+    font-family: Arial;
+    font-size: 11px;
+    margin: 20px;
+}
 
-        h1, h2, h3 {
-            text-align: center;
-            margin: 5px 0;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+.title {
+    font-size: 18px;
+    font-weight: bold;
+}
 
-        .header img {
-            width: 120px;
-        }
+.info {
+    margin-bottom: 10px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+}
 
-        table th {
-            background: #eee;
-            border: 1px solid #333;
-            padding: 2px 4px;
-            font-size: 10px;
-            line-height: 1;
-        }
+th, td {
+    border: 1px solid #000;
+    padding: 4px;
+}
 
-        table td {
-            border: 1px solid #333;
-            padding: 2px 4px;
-            font-size: 10px;
-            line-height: 1;
-        }
+th {
+    background: #eee;
+}
 
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 11px;
-            color: #555;
-        }
-    </style>
+/* 🔥 IMPRESSÃO AUTOMÁTICA */
+@media print {
+    body {
+        margin: 10px;
+    }
+}
+</style>
+
+<script>
+window.onload = function() {
+    window.print();
+}
+</script>
+
 </head>
 
 <body>
 
-    <div class="header">
-        <img src="{{ logo_path }}" alt="Logo">
-        <h2>Pedido Nº {{ order.id }}</h2>
-        <p><strong>Requisição:</strong> {{ order.requisition.name }}</p>
-        <p>Data: {{ order.created_at|date:"d/m/Y H:i" }}</p>
-    </div>
+<div class="header">
+    <div class="title">XODÓ - PEDIDO #{{ order.id }}</div>
+</div>
 
-    <h3>Itens do Pedido</h3>
+<div class="info">
+    <strong>Usuário:</strong> {{ order.user }}<br>
+    <strong>Data:</strong> {{ order.created_at }}<br>
+    <strong>Status:</strong> {{ order.status }}
+</div>
 
-    <table>
+<table>
+    <thead>
         <tr>
             <th>Produto</th>
             <th>Quantidade</th>
         </tr>
+    </thead>
 
-        {% for item in order.items.all %}
+    <tbody>
+        {% for item in order.orderitem_set.all %}
         <tr>
             <td>{{ item.product.name }}</td>
             <td>{{ item.quantity }}</td>
         </tr>
         {% endfor %}
-    </table>
-
-    <div class="footer">
-        Documento gerado automaticamente pelo sistema de requisições.
-    </div>
+    </tbody>
+</table>
 
 </body>
 </html>
